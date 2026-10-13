@@ -1,0 +1,215 @@
+<div
+  id="campustree-welcome"
+  class="welcome-overlay"
+  phx-update="ignore"
+>
+  <div class="welcome-card">
+    <div class="welcome-card-logos">
+      <div class="welcome-card-logo-wrap">
+        <img
+          src="/images/logos/PU.jpg"
+          alt="University of the Punjab"
+          class="welcome-card-logo"
+        />
+      </div>
+
+      <div class="welcome-card-divider"></div>
+
+      <div class="welcome-card-logo-wrap">
+        <img
+          src="/images/logos/GIS.jpg"
+          alt="GIS"
+          class="welcome-card-logo"
+        />
+      </div>
+
+      <div class="welcome-card-divider"></div>
+
+      <div class="welcome-card-logo-wrap">
+        <img
+          src="/images/logos/SCD.jpg"
+          alt="SCD"
+          class="welcome-card-logo"
+        />
+      </div>
+    </div>
+
+    <div class="welcome-card-label">
+      UNIVERSITY OF THE PUNJAB · LAHORE
+    </div>
+    <h1>CampusTree</h1>
+
+    <div class="welcome-card-rule"></div>
+
+    <p class="welcome-card-description">
+      Discover the trees that shape our campus. Explore their locations and species
+      information through an interactive map of the University of the Punjab.
+    </p>
+
+    <div class="welcome-card-note">
+      <span class="welcome-note-icon" aria-hidden="true">✦</span>
+      <span>Biomass insights are in development.</span>
+    </div>
+
+    <div class="welcome-card-action">
+      <span class="welcome-action-dot"></span>
+      Click anywhere to start exploring
+      <span class="welcome-action-arrow" aria-hidden="true">→</span>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard">
+  <header class="dashboard-header">
+    <div class="header-brand">
+      <div class="header-logos">
+        <img
+          src="/images/logos/PU.jpg"
+          alt="University of the Punjab"
+          class="header-logo"
+        />
+      </div>
+      <div class="header-title">
+        <h1>CampusTree</h1>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <a class="header-home-link" href={~p"/home"}>
+        <span aria-hidden="true">⌂</span> Home
+      </a>
+    </div>
+  </header>
+
+  <main class="dashboard-content">
+    <section class="map-container">
+      <div
+        id="tree-map"
+        phx-hook="TreeMap"
+        phx-update="ignore"
+      >
+      </div>
+
+      <div class="map-controls">
+        <div class="layer-controls">
+          <label class="layer-toggle">
+            <input
+              type="checkbox"
+              id="toggle-trees"
+              checked
+            />
+            <span class="layer-radio"></span>
+            <span class="layer-label">Trees</span>
+          </label>
+
+          <label class="layer-toggle">
+            <input
+              type="checkbox"
+              id="toggle-polygons"
+              checked
+            />
+            <span class="layer-radio"></span>
+            <span class="layer-label">Canopy</span>
+          </label>
+
+          <label class="layer-toggle">
+            <input
+              type="checkbox"
+              id="toggle-lulc"
+            />
+            <span class="layer-radio"></span>
+            <span class="layer-label">LULC</span>
+          </label>
+        </div>
+
+        <div class="zoom-controls">
+          <button type="button" id="zoom-in">+</button>
+          <button type="button" id="zoom-out">−</button>
+        </div>
+      </div>
+
+      <section class="map-location-card" aria-labelledby="location-title">
+        <span class="section-label">LOCATION</span>
+        <h2 id="location-title">Botanical Garden</h2>
+        <p class="map-location-subtitle">University of the Punjab · Lahore</p>
+
+        <details class="location-details">
+          <summary class="location-details-toggle">
+            <span>About this location</span>
+            <span class="location-details-icon" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="location-details-content">
+            <p>
+              The University of the Punjab (PU) Botanical Garden was established in 1963 on the premises of the Quaid-e-Azam Campus (New Campus) in Lahore.
+            The garden serves as an outdoor laboratory, seed center, and experimental field for undergraduate and postgraduate student research and conservation
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section
+        id="map-information"
+        class="map-information-panel"
+        aria-labelledby="map-information-title"
+      >
+        <div class="map-information-heading">
+          <div>
+            <span class="section-label">MAP INFORMATION</span>
+            <h2 id="map-information-title">
+              {if @selected_tree, do: "Selected tree", else: "Explore the map"}
+            </h2>
+          </div>
+          <div class="map-inventory-count">
+            <strong>{@tree_count}</strong>
+            <span>trees</span>
+          </div>
+          <button
+            class="map-information-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="map-information-body"
+            aria-label="Minimize map information"
+          >
+            <span aria-hidden="true">−</span>
+          </button>
+        </div>
+
+        <div id="map-information-body" class="map-information-body">
+          <div class="info-card">
+            <%= if @selected_tree do %>
+              <div class="selected-tree-info">
+                <div class="tree-attributes">
+                  <div class="tree-attribute">
+                    <span>Name</span>
+                    <strong>{@selected_tree["Local_Name"]}</strong>
+                  </div>
+                  <div class="tree-attribute">
+                    <span>Scientific Name</span>
+                    <strong>{@selected_tree["Scientific"]}</strong>
+                  </div>
+                  <div class="tree-attribute">
+                    <span>Family</span>
+                    <strong>{@selected_tree["Family"]}</strong>
+                  </div>
+                  <div class="tree-attribute">
+                    <span>Site</span>
+                    <strong>{@selected_tree["Site_Name"]}</strong>
+                  </div>
+                  <div class="tree-attribute">
+                    <span>Area</span>
+                    <strong>{@selected_tree["Area"]}</strong>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              <p>
+                Click a tree on the map to view its name, scientific name, family,
+                site, and area.
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
